@@ -38,15 +38,15 @@ This bot responds to users' posts with positive messages!
 ### Data Collection, Usage, Retention, and Security
 The bots collect and make use of the following data:
 
-- **Follower Posts:**  
+**Follower Posts:**  
   - The content and metadata of posts from accounts following the bot.  
   - Post information is **never permanently retained** and is only stored temporarily in the bot's cache.
 
-- **User Metadata:**  
+**User Metadata:**  
   - Publicly accessible information such as usernames and profile details.  
   - The only information stored is the user DID (a form of user ID in Bluesky).
 
-- **User Settings:**  
+**User Settings:**  
   - Settings configured by the user, such as nicknames.
   - This information is stored **against the user's DID**.
 
@@ -57,13 +57,13 @@ The bots collect and make use of the following data:
 ### Data Deletion
 If you would like your data deleted from the bot, there are two options:
 
-- **Automatic Deletion:**  
+**Automatic Deletion:**  
   1. Send a direct message to the bot.  
   2. Your message must contain `!delete`.  
   3. You will receive a confirmation message once your data has been deleted from the bot's storage.
       - Do not send another message to the bot before the confirmation message is sent
 
-- **Manual Deletion:**  
+**Manual Deletion:**  
   1. Contact Pikachannel via:  
      - Bluesky: [pikachannel.skittlesquad.xyz](https://bsky.app/profile/ashley.skittlesquad.xyz)  
      - Email: pikachannel.dev@gmail.com  
