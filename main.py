@@ -1,6 +1,6 @@
 # -------- Imports --------
 import asyncio 
-from the_bots.positive import main
+from bots.run_post import main
 
 # -------- Run Bots Function --------
 async def run_bots():
