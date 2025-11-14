@@ -22,7 +22,11 @@ async def json_worker(path, queue, user_data):
                 update_data = {}
                 for key, value in update.items():
                     if key not in ["type", "user_did"]:
-                        update_data[key] = value
+                        if value == "!pop_entry": # Check if the value is a pop instruction
+                            if data.get(user_did, {}).get(key, None):
+                                data[user_did].pop(key) # Pop an entry if a pop command was recieved
+                        else:
+                            update_data[key] = value 
                         
                 if user_did not in data:
                     data[user_did] = {} # Set to empty dict if user was not in the file
