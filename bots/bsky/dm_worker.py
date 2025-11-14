@@ -36,19 +36,29 @@ async def check_dms(client, json_queue, account_did):
                 if parts[0] == "!nickname":
                     nickname = parts[1] if len(parts) > 1 else None
 
-                # -- Add the nickname to the json queue
-                if nickname:
-                    user_data = {
-                        "user_did": user_did,
-                        "nickname": nickname.strip() 
-                        }
-                    
-                    await json_queue.put(user_data)
+                    # -- Add the nickname to the json queue
+                    if nickname:
+                        user_data = {
+                            "user_did": user_did,
+                            "nickname": nickname.strip() 
+                            }
+                        
+                        await json_queue.put(user_data)
+
+                        # -- Send a confirmation message
+                        dm.send_message(
+                            models.ChatBskyConvoSendMessage.Data(
+                                convo_id=convo.id,
+                                message=models.ChatBskyConvoDefs.MessageInput(
+                                    text=f"Your nickname has been successfully changed to '{nickname.strip()}'!\nYou can change it at anytime by sending the same command."
+                                ),
+                            )
+                        )
+                        
         except Exception as e:
             print(f"[DM Worker] Error: {e}")
             continue
         finally:
             await asyncio.sleep(300) # -- Check dms every 5 minutes
                 
-
 
