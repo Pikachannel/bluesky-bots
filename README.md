@@ -68,3 +68,7 @@ If you would like your data deleted from the bot, there are two options:
      - Bluesky: [pikachannel.skittlesquad.xyz](https://bsky.app/profile/ashley.skittlesquad.xyz)  
      - Email: pikachannel.dev@gmail.com  
   2. Await confirmation that your data has been deleted from the bot's storage.
+
+## License
+This repository is currently private. All ownership remains with Pikachannel (Ashley)
+
