@@ -18,3 +18,14 @@ The current features include:
 3. **Custom nicknames**: Users can set a custom nickname instead of using their Bluesky display name
 
 ### How to use
+1. Follow the bot on Bluesky
+   - Upon unfollowing or blocking you may have to wait up to 5 minutes for this to register for the bot and the replies to stop
+
+#### Deleting posts
+1. Find a reply made under one of your posts
+2. Reply to it with "delete" and it will be instantly deleted
+
+#### Custom nickname
+1. Send a direct message to the bot in the format; !nickname 'inset_nickname_here'
+2. Wait for the bot to respond **before** sending a new message to the bot
+   - You may have to wait up to 5 minutes
