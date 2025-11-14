@@ -39,9 +39,10 @@ async def check_dms(client, json_queue, account_did):
                     # -- Add the nickname to the json queue
                     if nickname:
                         user_data = {
+                            "type": "update",
                             "user_did": user_did,
-                            "nickname": nickname.strip() 
-                            }
+                            "nickname": nickname.strip()
+                        }
                         
                         await json_queue.put(user_data)
 
@@ -54,11 +55,30 @@ async def check_dms(client, json_queue, account_did):
                                 ),
                             )
                         )
-                        
+                
+                # -- Handle deleting a user's data
+                elif parts[0] == "!delete":
+                    delete_data = {
+                        "type": "delete",
+                        "user_did": user_did
+                    }
+
+                    await json_queue.put(delete_data)
+
+                    # -- Send a confirmation message
+                    dm.send_message(
+                        models.ChatBskyConvoSendMessage.Data(
+                            convo_id=convo.id,
+                            message=models.ChatBskyConvoDefs.MessageInput(
+                                text=f"Your data was successfully deleted from the bots storage."
+                            ),
+                        )
+                    )
+
+
         except Exception as e:
             print(f"[DM Worker] Error: {e}")
             continue
         finally:
             await asyncio.sleep(300) # -- Check dms every 5 minutes
                 
-
