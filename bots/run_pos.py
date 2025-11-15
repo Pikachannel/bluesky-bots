@@ -1,9 +1,9 @@
 # -------- Imports --------
-from .bsky.jetstream import Websocket
-from .bsky.client import login
-from .bsky.followers import refresh_followers
-from .bsky.worker import worker
-from .bsky.dm_worker import check_dms
+from .pos.jetstream import Websocket
+from .pos.followers import refresh_followers
+from .pos.worker import worker
+from .pos.dm_worker import check_dms
+from .utils.client import login
 from .utils.json_worker import json_worker
 import asyncio
 import os
