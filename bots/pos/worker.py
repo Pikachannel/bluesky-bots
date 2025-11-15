@@ -1,6 +1,6 @@
 # -------- Imports --------
-from ..bsky.post import make_post
-from ..bsky.delete import delete_post
+from ..pos.post import make_post
+from ..pos.delete import delete_post
 import asyncio
 
 # -------- Worker Function --------
