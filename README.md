@@ -2,7 +2,6 @@
 
 ## Overview
 This repository contains all the code, config files and more for Bluesky bots made by Pikachannel (Ashley).
-None of the bots in this repository use AI, either for bot functionally or during the creation of the bot.
 
 Current bots included:
 1. Whimsy Miku Bot (positivitybot.bsky.social)
