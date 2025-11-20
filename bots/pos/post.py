@@ -1,6 +1,7 @@
 # -------- Imports --------
 import random
 from atproto import Client, client_utils
+import time
 
 post_dict = {}
 
@@ -10,12 +11,20 @@ async def make_post(client, post_cid, post_uri, user_did, messages, user_data, l
 
     # -- Check the post interval
     post_interval = user_data.get(user_did, {}).get("post_interval", 0)
-    if user_did in post_dict:
+    if user_did in post_dict and post_interval > 0:
         last_post_time = post_dict[user_did]
         current_time = time.time()
         if current_time - last_post_time < post_interval:
             print(f"[Post] Skipping post for {user_did} due to post interval ({post_interval} seconds)")
             return
+
+    # -- Check the post chance
+    post_chance = user_data.get(user_did, {}).get("post_chance", 100)
+    if random.uniform(0, 100) > post_chance:
+        print(f"[Post] Skipping post for {user_did} due to post chance ({post_chance}%)")
+        return
+    if post_interval > 0:
+        post_dict[user_did] = time.time()
 
     # -- Check if the user has a nickname set
     display_name = user_data.get(user_did, {}).get("nickname", None)
