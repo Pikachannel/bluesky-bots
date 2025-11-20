@@ -61,6 +61,41 @@ async def check_dms(client, json_queue, account_did):
                             )
                         )
 
+                # -- Add the interval value to the json queue
+                elif parts[0] == "!interval":
+                    # -- Check if the user is resetting or has provided a number
+                    interval_value = parts[1] if len(parts) > 1 else "!pop_entry"
+                    if not interval_value.isdigit() and interval_value != "!pop_entry":
+                        continue
+                    if interval_value != "!pop_entry":
+                        interval_value = int(interval_value)
+                        if interval_value < 0 or interval_value > 3600:
+                            continue
+                    
+                    # -- Add the interval value to the json queue
+                    interval_data = {
+                        "type": "update",
+                        "user_did": user_did,
+                        "interval": interval_value
+                    }
+
+                    await json_queue.put(interval_data)
+
+                    if interval_value != "!pop_entry":
+                        dm_text = f"The interval between replies under your posts is now '{interval_value}' seconds!\nYou can change this at anytime by sending the same command."
+                    else:
+                        dm_text = "The interval between replies under your posts has been reset to have no interval."
+                    
+                    # -- Send a confirmation message
+                    dm.send_message(
+                        models.ChatBskyConvoSendMessage.Data(
+                            convo_id=convo.id,
+                            message=models.ChatBskyConvoDefs.MessageInput(
+                                text=dm_text
+                            ),
+                        )
+                    )
+
                 # -- Add the chance value to the json queue
                 elif parts[0] == "!chance":
                     # -- Check if the user is resetting or has provided a number
