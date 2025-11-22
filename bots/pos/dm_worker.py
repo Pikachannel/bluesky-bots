@@ -60,7 +60,6 @@ async def check_dms(client, json_queue, account_did):
                             )
                         )
                 
-                    
                 # -- Add the chance value to the json queue
                 elif parts[0] == "!chance":
                     # -- Check if the user is resetting or has provided a number
@@ -148,8 +147,27 @@ async def check_dms(client, json_queue, account_did):
                             ),
                         )
                     )
+                    
+                # -- Send the user's settings
+                elif parts[0] == "!settings":
+                    load_settings = user_data.get(user_did, None)
 
-                            
+
+                    if load_settings:
+                        settings = "\n".join(f"{key.capitalize()}: {value}" for key, value in load_settings.items())
+
+                        dm_text = f"Your settings are:\n{settings}"
+                    else:
+                        dm_text = "You do not have any settings configured, you can change your settings by using commands"
+                    dm.send_message(
+                        models.ChatBskyConvoSendMessage.Data(
+                            convo_id=convo.id,
+                            message=models.ChatBskyConvoDefs.MessageInput(
+                                text=dm_text
+                            ),
+                        )
+                    )
+
                 # -- Handle deleting a user's data
                 elif parts[0] == "!delete":
                     delete_data = {
@@ -165,6 +183,40 @@ async def check_dms(client, json_queue, account_did):
                             convo_id=convo.id,
                             message=models.ChatBskyConvoDefs.MessageInput(
                                 text=f"Your data was successfully deleted from the bots storage."
+                            ),
+                        )
+                    )
+
+                # -- Send the help message
+                elif parts[0] == "!help":
+                    # -- Setup text
+                    text = "Check out the README file for a full list of commands and features."
+                    link_text = "README file"
+                    uri = "https://github.com/Pikachannel/bluesky-bots"
+                    byte_start = text.encode("utf-8").find(link_text.encode("utf-8"))
+                    byte_end = byte_start + len(link_text.encode("utf-8"))
+
+                    # -- Creates the clickable link
+                    facet = {
+                        "index": {
+                            "byteStart": byte_start,
+                            "byteEnd": byte_end
+                        },
+                        "features": [
+                            {
+                                "$type": "app.bsky.richtext.facet#link",
+                                "uri": uri
+                            }
+                        ]
+                    }
+
+                    # -- Send the DM response
+                    dm.send_message(
+                        models.ChatBskyConvoSendMessage.Data(
+                            convo_id=convo.id,
+                            message=models.ChatBskyConvoDefs.MessageInput(
+                                text=text,
+                                facets=[facet] # Attaches the clickable link to the text
                             ),
                         )
                     )
