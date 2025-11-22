@@ -28,21 +28,29 @@ This bot responds to users' posts with positive messages!
 1. Find a reply made under one of your posts.
 2. Reply to it with "delete" and it will be removed instantly.
 
-#### Custom nickname
+### Settings
+You can configure settings with the bot! You do this by sending the appropriate command in the bots dms, these can be seen below.
+To view all your settings:
+1. Send a direct message to the bot in the format:
+   - `!settings`
+2. Wait for the bot to respond **before** sending a new message.
+   - Responses may take up to 5 minutes.
+
+##### Custom nickname
 1. Send a direct message to the bot in the format:  
    - **Setting Nickname:** `!nickname insert_nickname_here`
    - **Resetting Nickname:** `!nickname`
 2. Wait for the bot to respond **before** sending a new message.
    - Responses may take up to 5 minutes.
 
-### Post chance 
+#### Post chance 
 1. Send a direct message to the bot in the format:
   - **Setting Chance:** `!chance insert_chance_here` (must be a number between 1 and 100)
   - **Resetting Chance:** `!chance`
 2. Wait for the bot to respond **before** sending a new message.
    - Responses may take up to 5 minutes.
 
-### Post interval
+#### Post interval
 1. Send a direct message to the bot in the format:
   - **Setting Interval:** `!interval insert_interval_here` (must be a number between 1 and 3600)
   - **Resetting Interval:** `!interval`
@@ -74,10 +82,10 @@ The bots collect and make use of the following data:
 If you would like your data deleted from the bot, there are two options:
 
 **Automatic Deletion:**  
-  1. Send a direct message to the bot.  
-  2. Your message must contain `!delete`.  
-  3. You will receive a confirmation message once your data has been deleted from the bot's storage.
-      - Do not send another message to the bot before the confirmation message is sent
+1. Send a direct message to the bot in the format:
+   - `!delete`
+2. Wait for the bot to respond **before** sending a new message.
+   - Responses may take up to 5 minutes.
 
 **Manual Deletion:**  
   1. Contact Pikachannel via:  
