@@ -2,9 +2,10 @@
 from ..pos.post import make_post
 from ..pos.delete import delete_post
 import asyncio
+from atproto import Client
 
 # -------- Worker Function --------
-async def worker(client, queue, followers_set, account_did, messages, user_data):
+async def worker(client: Client , queue: asyncio.Queue[dict], followers_set: set, account_did: str, messages: dict, user_data: dict) -> None:
     print("[BSKY Worker] Worker starting")
     # -- Start Worker
     while True:
@@ -36,9 +37,10 @@ async def worker(client, queue, followers_set, account_did, messages, user_data)
             post_rkey = message.get("commit", {}).get("rkey")
             post_cid = message.get("commit", {}).get("cid")
             post_uri = f"at://{user_did}/app.bsky.feed.post/{post_rkey}"
+            post_text = message.get("commit", {}).get("record", {}).get("text", None)
 
             # -- Make the post
-            await make_post(client, post_cid, post_uri, user_did, messages, user_data)
+            await make_post(client, post_cid, post_uri, user_did, messages, user_data, post_text)
 
         except Exception as e:
             print(f"[BSKY Worker] An error has occured, {e}")
