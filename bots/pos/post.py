@@ -6,7 +6,7 @@ import time
 post_dict = {}
 
 # -------- Make Post Function --------
-async def make_post(client, post_cid, post_uri, user_did, messages, user_data, lang="en"):
+async def make_post(client: Client, post_cid: str, post_uri: str, user_did: str, messages: dict, user_data: dict, lang: str = "en") -> None:
     global post_dict
 
     # -- Check the post interval
@@ -36,8 +36,8 @@ async def make_post(client, post_cid, post_uri, user_did, messages, user_data, l
         if not display_name:
             display_name = users_profile.handle.split(".")[0] # Set to users handle if no display name is found
 
-    # -- Format the random message with display name
-    random_message = random.choice(messages[lang])
+    # -- Check mode and generate message
+    random_message = random.choice(messages)
     formatted_message = random_message.format(display_name=display_name)
 
     reply_builder = client_utils.TextBuilder()
