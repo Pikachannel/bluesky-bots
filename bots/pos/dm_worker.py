@@ -1,10 +1,12 @@
-# -------- Imports --------
+#-- ------ Imports --------
 from atproto import Client, IdResolver, models
 from datetime import datetime, timedelta, timezone
 import asyncio
+import json
+from typing import Any
 
 # -------- Check DMs Function --------
-async def check_dms(client, json_queue, account_did):
+async def check_dms(client: Client, json_queue: asyncio.Queue[dict], account_did: str, user_data: dict) -> None:    
     # -- Start function
     print(f"[DM Worker] Worker starting")
     while True:
@@ -37,13 +39,13 @@ async def check_dms(client, json_queue, account_did):
 
                     # -- Add the nickname to the json queue
                     if nickname:
-                        user_data = {
+                        nickname_data = {
                             "type": "update",
                             "user_did": user_did,
                             "nickname": nickname.strip()[:20]
                         }
                         
-                        await json_queue.put(user_data)
+                        await json_queue.put(nickname_data)
 
                         # -- Send a confirmation message
                         if nickname != "!pop_entry":
@@ -59,12 +61,12 @@ async def check_dms(client, json_queue, account_did):
                                 ),
                             )
                         )
-                
+                                 
                 # -- Add the chance value to the json queue
                 elif parts[0] == "!chance":
                     # -- Check if the user is resetting or has provided a number
                     chance_value = parts[1] if len(parts) > 1 else "!pop_entry"
-                    if chance_value != "pop_entry":
+                    if chance_value != "!pop_entry":
                         try:
                             chance_value = float(chance_value)
                             is_digit = True
@@ -108,7 +110,7 @@ async def check_dms(client, json_queue, account_did):
                 elif parts[0] == "!interval":
                     # -- Check if the user is resetting or has provided a number
                     interval_value = parts[1] if len(parts) > 1 else "!pop_entry"
-                    if interval_value != "pop_entry":
+                    if interval_value != "!pop_entry":
                         try:
                             interval_value = float(interval_value)
                             is_digit = True
@@ -147,7 +149,7 @@ async def check_dms(client, json_queue, account_did):
                             ),
                         )
                     )
-                    
+                   
                 # -- Send the user's settings
                 elif parts[0] == "!settings":
                     load_settings = user_data.get(user_did, None)
@@ -220,14 +222,14 @@ async def check_dms(client, json_queue, account_did):
                             ),
                         )
                     )
-
+                
         except Exception as e:
             print(f"[DM Worker] Error: {e}")
             continue
         finally:
-            await asyncio.sleep(300) # -- Check dms every 5 minutes
-                
-def error_message(dm, convo):
+            await asyncio.sleep(300) # Check dms every 5 minutes
+
+def error_message(dm: Any, convo: Any) -> None:
     dm.send_message(
     models.ChatBskyConvoSendMessage.Data(
         convo_id=convo.id,
