@@ -1,5 +1,8 @@
+# -------- Imports --------
+from atproto import Client
+
 # -------- Delete Function --------
-async def delete_post(client, message, account_did, user_did):
+async def delete_post(client: Client, message: dict, account_did: str, user_did: str) -> None:
     # -- Get all post information 
     commit = message.get("commit", {})
     record = commit.get("record", {})
@@ -16,6 +19,3 @@ async def delete_post(client, message, account_did, user_did):
         if record.get("text", "").lower() == "delete":
             client.delete_post(parent.get("uri", "")) # Delete the post
             print(f"[Delete] Post deleted from {user_did}")
-
-
-
