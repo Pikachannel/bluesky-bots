@@ -1,6 +1,6 @@
 # -------- Imports --------
-from ..pos.post import make_post
-from ..pos.delete import delete_post
+from src.post import make_post
+from src.delete import delete_post
 import asyncio
 from atproto import Client
 
@@ -40,7 +40,7 @@ async def worker(client: Client , queue: asyncio.Queue[dict], followers_set: set
             post_text = message.get("commit", {}).get("record", {}).get("text", None)
 
             # -- Make the post
-            await make_post(client, post_cid, post_uri, user_did, messages, user_data, post_text)
+            await make_post(client, post_cid, post_uri, user_did, post_text, messages, user_data)
 
         except Exception as e:
             print(f"[BSKY Worker] An error has occured, {e}")

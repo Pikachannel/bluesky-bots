@@ -1,1 +1,0 @@
-This directory contains files that store data for every bot.

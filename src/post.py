@@ -6,7 +6,7 @@ import time
 post_dict = {}
 
 # -------- Make Post Function --------
-async def make_post(client: Client, post_cid: str, post_uri: str, user_did: str, messages: dict, user_data: dict, lang: str = "en") -> None:
+async def make_post(client: Client, post_cid: str, post_uri: str, user_did: str, post_text: str, messages: dict, user_data: dict, lang: str = "en") -> None:
     global post_dict
 
     messages = messages[lang]
