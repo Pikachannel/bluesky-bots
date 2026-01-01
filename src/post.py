@@ -11,22 +11,27 @@ async def make_post(client: Client, post_cid: str, post_uri: str, user_did: str,
 
     messages = messages[lang]
 
-    # -- Check the post interval
-    post_interval = user_data.get(user_did, {}).get("interval", 0)
-    if user_did in post_dict and post_interval > 0:
+    # -- Check the post interval (time)
+    post_interval_time = user_data.get(user_did, {}).get("interval", [])
+    if user_did in post_dict and len(post_interval_time) > 0:
         last_post_time = post_dict[user_did]
         current_time = time.time()
-        if current_time - last_post_time < post_interval:
-            print(f"[Post] Skipping post for {user_did} due to post interval ({post_interval} seconds)")
+        
+        interval = post_interval_time[0]
+        if len(post_interval_time) == 2:
+            interval = random.uniform(post_interval_time[0], post_interval_time[1])
+        
+        if current_time - last_post_time < interval:
+            print(f"[Post] Skipping post for {user_did} due to post interval ({interval} seconds)")
             return
+    if len(post_interval_time) > 0:
+        post_dict[user_did] = time.time()
 
     # -- Check the post chance
     post_chance = user_data.get(user_did, {}).get("chance", 100)
     if random.uniform(0, 100) > post_chance:
         print(f"[Post] Skipping post for {user_did} due to post chance ({post_chance}%)")
         return
-    if post_interval > 0:
-        post_dict[user_did] = time.time()
 
     # -- Check if the user has a nickname set
     display_name = user_data.get(user_did, {}).get("nickname", None)
