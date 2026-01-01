@@ -6,7 +6,7 @@ from datetime import datetime, timezone, timedelta
 
 # -------- DmWorker Class --------
 class DmWorker:
-    def __init__(self, client: Client, command_manager: Any, json_queue: asyncio.Queue, account_did: str, check_interval: int = 300):
+    def __init__(self, client: Client, command_manager: Any, json_queue: asyncio.Queue, account_did: str, check_interval: int = 300) -> None:
         self.client = client
         self.command_manager = command_manager
         self.json_queue = json_queue
@@ -15,7 +15,7 @@ class DmWorker:
     
     # -------------
     # -- Start the DM Worker
-    async def start(self):
+    async def start(self) -> None:
         print("[DM Worker] Starting DM worker")
         while True:
             try:
@@ -26,7 +26,7 @@ class DmWorker:
     
     # -------------
     # -- Check DMs sent to the bot
-    async def check_dms(self):
+    async def check_dms(self) -> None:
         # -- Get the messages sent to the bot
         dm_client = self.client.with_bsky_chat_proxy()
         dm = dm_client.chat.bsky.convo
