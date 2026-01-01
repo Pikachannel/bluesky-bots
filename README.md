@@ -35,7 +35,7 @@ To view all your settings:
 
 ##### Custom nickname
 1. Send a direct message to the bot in the format:  
-   - **Setting Nickname:** `!nickname insert_nickname_here`
+   - **Setting Nickname:** `!nickname insert_nickname_here` (your nickname can be max 20 characters)
    - **Resetting Nickname:** `!nickname`
 2. Wait for the bot to respond **before** sending a new message.
    - Responses may take up to 5 minutes.
@@ -49,7 +49,8 @@ To view all your settings:
 
 #### Post interval
 1. Send a direct message to the bot in the format:
-  - **Setting Interval:** `!interval insert_interval_here` (must be a number between 1 and 3600)
+  - **Setting Static Interval:** `!interval insert_interval_here` (must be a number between 0 and 3600)
+  - **Setting Variable Interval:** `!interval lower_bound-upper_bound` (both numbers must be between 0 and 3600)
   - **Resetting Interval:** `!interval`
 2. Wait for the bot to respond **before** sending a new message.
    - Responses may take up to 5 minutes.
