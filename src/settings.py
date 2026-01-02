@@ -121,10 +121,10 @@ class CommandManager:
                 return False, "An error occured while updating your interval setting.\nPlease make sure you only use numbers.\nnUse !help at any time to see all commands."
 
             if interval_value > 3600 or interval_value < 0:
-                return False, "An error occured while updating your interval setting.\nPlease make sure interval is in the range '0-3600'.\nnUse !help at any time to see all commands."
+                return False, "An error occured while updating your interval setting.\nPlease make sure your interval is in the range '0-3600'.\nnUse !help at any time to see all commands."
 
             final_value = [round(interval_value, 2)]
-            text_falue = round(interval_value, 2)
+            text_value = round(interval_value, 2)
         
         # -- Add to queue
         payload = {
@@ -136,6 +136,64 @@ class CommandManager:
         await self.json_queue.put(payload)
 
         return True, f"Your interval has been updated to '{text_value}' seconds\nYou can change this at any time by sending the same command.\nUse !help at any time to see all commands."
+
+    # -------------
+    # -- Interval (posts)
+    # A static number of posts the bot will skip
+    # A ranged interval of posts the bot will skip
+    async def interval_posts(self, user_did: str, interval: str | None) -> tuple[bool, str]:
+        # -- Validation and mormalisation
+        if interval is None:
+            return await self.remove_setting(user_did, "interval_posts")
+    
+        # -- Check if the interval is a range or static value
+        intervalSplit = interval.split("-")
+
+        # -- Range
+        if len(intervalSplit) == 2:
+            interval_value_1 = self.to_float(intervalSplit[0])
+            interval_value_2 = self.to_float(intervalSplit[1])
+
+            if interval_value_1 is None or interval_value_2 is None:
+                return False, "An error occured while updating your interval setting.\nPlease make sure you only use numbers.\nnUse !help at any time to see all commands."
+           
+            interval_format_1, interval_format_2 = int(interval_value_1), int(interval_value_2)
+         
+            if interval_format_1 > interval_format_2:
+                return False, "An error occured while updating your interval setting.\Please make sure your interval is in the range '0-50'.\nnUse !help at any time to see all commands."
+
+            if interval_format_1 < 0 or interval_format_2 < 0:
+                return False, "An error occured while updating your interval setting.\Please make sure your first value is less then your second value.\nnUse !help at any time to see all commands."
+
+            if interval_format_2 > 50:
+                return False, "An error occured while updating your interval setting.\Please make sure your interval is in the range '0-50'.\nnUse !help at any time to see all commands."
+
+            final_value = [interval_format_1, interval_format_2]
+            text_value = f"{interval_format_1}-{interval_format_2}"
+        
+        # -- Static
+        else:
+            interval_value = self.to_float(interval)
+
+            if interval_value is None:
+                return False, "An error occured while updating your interval setting.\nPlease make sure you only use numbers.\nnUse !help at any time to see all commands."
+
+            if interval_value > 50 or interval_value < 0:
+                return False, "An error occured while updating your interval setting.\nPlease make sure your interval is in the range '0-50'.\nnUse !help at any time to see all commands."
+
+            final_value = [int(interval_value)]
+            text_value = int(interval_value)
+        
+        # -- Add to queue
+        payload = {
+            "type": "update",
+            "user_did": user_did,
+            "interval_posts": final_value
+        }
+
+        await self.json_queue.put(payload)
+
+        return True, f"Your interval has been updated to '{text_value}' posts\nYou can change this at any time by sending the same command.\nUse !help at any time to see all commands."
 
     # -------------
     # -- Delete
