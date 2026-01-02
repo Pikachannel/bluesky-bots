@@ -1,11 +1,10 @@
 # -------- Imports --------
-from src.post import make_post
-from src.delete import delete_post
 import asyncio
 from atproto import Client
+from typing import Any
 
 # -------- Worker Function --------
-async def worker(client: Client , queue: asyncio.Queue[dict], followers_set: set, account_did: str, messages: dict, user_data: dict) -> None:
+async def worker(client: Client , queue: asyncio.Queue[dict], followers_set: set, account_did: str, messages: dict, user_data: dict, post_manager: Any) -> None:
     print("[BSKY Worker] Worker starting")
     # -- Start Worker
     while True:
@@ -30,7 +29,7 @@ async def worker(client: Client , queue: asyncio.Queue[dict], followers_set: set
                 continue
 
             if message.get("commit", {}).get("record", {}).get("reply", {}): # Only handle delete requests for replies
-                await delete_post(client, message, account_did, user_did)
+                await post_manager.delete_post(client, message, account_did, user_did)
                 continue
 
             # -- Extract post cid and uri
@@ -40,10 +39,9 @@ async def worker(client: Client , queue: asyncio.Queue[dict], followers_set: set
             post_text = message.get("commit", {}).get("record", {}).get("text", None)
 
             # -- Make the post
-            await make_post(client, post_cid, post_uri, user_did, post_text, messages, user_data)
+            await post_manager.make_post(client, post_cid, post_uri, user_did, post_text, messages, user_data)
 
         except Exception as e:
             print(f"[BSKY Worker] An error has occured, {e}")
         finally:
             queue.task_done() # Remove the task from the queue
-
