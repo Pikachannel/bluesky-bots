@@ -29,9 +29,9 @@ class PostManager:
         return True
 
     # -------------
-    # -- Interval (posts) check
-    def interval_posts_check(self, user_did: str, user_data: dict) -> bool:
-        intervals = user_data.get(user_did, {}).get("interval_posts", [])
+    # -- SKip post check
+    def skip_posts_check(self, user_did: str, user_data: dict) -> bool:
+        intervals = user_data.get(user_did, {}).get("skip", [])
         if not intervals:
             return True
 
@@ -50,8 +50,8 @@ class PostManager:
         skip = intervals[0] if len(intervals) == 1 else random.randint(intervals[0], intervals[1])
         self.post_numbers[user_did] = skip
 
-        return True        
-
+        return True     
+        
     # -------------
     # -- Chance check
     def chance_check(self, user_did: str, user_data: dict) -> bool:
@@ -84,7 +84,7 @@ class PostManager:
         if not self.interval_time_check(user_did, user_data):
             return
 
-        if not self.interval_posts_check(user_did, user_data):
+        if not self.skip_posts_check(user_did, user_data):
             return
 
         if not self.chance_check(user_did, user_data):
