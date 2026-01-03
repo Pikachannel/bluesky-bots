@@ -138,13 +138,13 @@ class CommandManager:
         return True, f"Your interval has been updated to '{text_value}' seconds\nYou can change this at any time by sending the same command.\nUse !help at any time to see all commands."
 
     # -------------
-    # -- Interval (posts)
+    # -- Skip posts
     # A static number of posts the bot will skip, between 0 and 50 posts
     # A ranged interval of posts the bot will skip, between 0 and 50 posts
-    async def interval_posts(self, user_did: str, interval: str | None) -> tuple[bool, str]:
+    async def skip_posts(self, user_did: str, interval: str | None) -> tuple[bool, str]:
         # -- Validation and mormalisation
         if interval is None:
-            return await self.remove_setting(user_did, "interval_posts")
+            return await self.remove_setting(user_did, "skip")
     
         # -- Check if the interval is a range or static value
         intervalSplit = interval.split("-")
@@ -176,10 +176,10 @@ class CommandManager:
             interval_value = self.to_float(interval)
 
             if interval_value is None:
-                return False, "An error occurred while updating your interval setting.\nPlease make sure you only use numbers.\Use !help at any time to see all commands."
+                return False, "An error occurred while updating your interval setting.\nPlease make sure you only use numbers.\nUse !help at any time to see all commands."
 
             if interval_value > 50 or interval_value < 0:
-                return False, "An error occurred while updating your interval setting.\nPlease make sure your interval is in the range '0-50'.\Use !help at any time to see all commands."
+                return False, "An error occurred while updating your interval setting.\nPlease make sure your interval is in the range '0-50'.\nUse !help at any time to see all commands."
 
             final_value = [int(interval_value)]
             text_value = int(interval_value)
@@ -188,7 +188,7 @@ class CommandManager:
         payload = {
             "type": "update",
             "user_did": user_did,
-            "interval_posts": final_value
+            "skip": final_value
         }
 
         await self.json_queue.put(payload)
@@ -259,3 +259,4 @@ class CommandManager:
         }
 
         return True, text, facet
+
